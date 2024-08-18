@@ -38,13 +38,13 @@ client.on('messageCreate', async (message)=> {
                 await fiducialChannel.awaitMessages({
                     filter,
                     max: 1,
-                    // time: 100000,
-                    // error: ['time'],
+                    time: 100000,
+                    error: ['time'],
                 })
-                // .catch(() => {
-                //     fiducialChannel.send(`\"${i}\" - ${paGenerator()}`);
-                //     absent++;
-                // })
+                .catch(() => {
+                    fiducialChannel.send(`\"${i}\" - ${paGenerator()}`);
+                    absent++;
+                })
 
                 
             }
