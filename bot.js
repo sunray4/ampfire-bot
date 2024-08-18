@@ -11,16 +11,25 @@ const client = new Client({
     ],
 })
 
+let hasSentWelcomeMessage = false; // Track if the welcome message has been sent
+
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    const generalChannel = message.guild.channels.cache.find(channel => channel.name === 'general' && channel.type === 'GUILD_TEXT');       
-        if (generalChannel) {
-            // Send a introduction message to the general channel
-            generalChannel.send("hey guys im AmpFire, your custom discord bot!! i can moderate fiducial if prompted by '/fiducial' in the fiducial channel through tagging the next fiducial number in the #kindergarten channel. ill skip to the next fiducial number if there is no response in 48 hours. hopefully ill get more features soon... ");
-        } else {
-            console.log('General channel not found!');
-        }
+});
 
+client.on('guildCreate', async (guild) => {
+    // Check if the welcome message has already been sent
+    if (hasSentWelcomeMessage) return;
+
+    const generalChannel = guild.channels.cache.find(channel => channel.name === 'general' && channel.type === 'GUILD_TEXT');
+    if (generalChannel) {
+        // Send a welcome message to the general channel
+        await generalChannel.send("hey guys im AmpFire, your custom discord bot!! i can moderate fiducial if prompted by '/fiducial' in the fiducial channel through tagging the next fiducial number in the #kindergarten channel. ill skip to the next fiducial number if there is no response in 48 hours. hopefully ill get more features soon... ");
+    } else {
+        console.log('General channel not found!');
+    }
+
+    hasSentWelcomeMessage = true;
 });
 
 client.on('messageCreate', async (message)=> {
@@ -60,8 +69,7 @@ client.on('messageCreate', async (message)=> {
                         time: 1000000,
                         errors: ['time'],
                     });
-                    console.log(`Message received: ${collected.first().content}`);
-                    
+                    console.log(`Message received: ${collected.first().content}`);                 
                     // Clear the timeout when the message is received
                     clearTimeout(timeoutId);
                 } catch {
