@@ -38,17 +38,18 @@ client.on('messageCreate', async (message)=> {
                 await fiducialChannel.awaitMessages({
                     filter,
                     max: 1,
-                    time: 100000,
-                    error: ['time'],
-                }).catch(() => {
-                    fiducialChannel.send(`${i} - ${paGenerator()}`);
-                    absent++;
+                    // time: 100000,
+                    // error: ['time'],
                 })
+                // .catch(() => {
+                //     fiducialChannel.send(`\"${i}\" - ${paGenerator()}`);
+                //     absent++;
+                // })
 
                 
             }
             else {
-                await fiducialChannel.send(`${i} - ${paGenerator()}`);
+                await fiducialChannel.send(`\"${i} \"- ${paGenerator()}`);
                 absent++;
             }
         }
@@ -56,7 +57,7 @@ client.on('messageCreate', async (message)=> {
             await fiducialChannel.send("well done for completing fiducial!! everyone is present congratulations :D");
         }
         else {
-            await fiducialChannel.send(`Well done for completing fiducial!! ${absent} people are absent in this round, try harder next time!`);
+            await fiducialChannel.send(`Well done for completing fiducial!! ${absent} people are absent in this round`);
         }
 
     }
