@@ -32,9 +32,9 @@ client.on('messageCreate', async (message)=> {
                 await kindergartenChannel.send(`${user} you're up for fiducial!!`);
                 const filter = (msg) => msg.content.includes(i.toString()) && msg.author.id === user.id && msg.channel === fiducialChannel.id;
                 
-                setTimeout(() => {
-                    kindergartenChannel.send(`${user} 36 hours is a long time to keep us waiting...`);
-                }, 10000);
+                // setTimeout(() => {
+                //     kindergartenChannel.send(`${user} 36 hours is a long time to keep us waiting...`);
+                // }, 10000);
                 await fiducialChannel.awaitMessages({
                     filter,
                     max: 1,
