@@ -31,7 +31,7 @@ client.on('messageCreate', async (message)=> {
             const user = message.guild.members.cache.find(member => member.nickname && member.nickname.includes(i.toString()));        
             if (user) {
                 await kindergartenChannel.send(`${user} ${fiducialPhraseGenerator()}`);
-                const filter = (msg) => msg.content.includes(i.toString()) && msg.author.id === user.id && msg.channel === fiducialChannel.id;
+                const filter = (msg) => msg.content.includes(i.toString()) && msg.author.id === user.id && msg.channel.id === fiducialChannel.id;
                 
                 setTimeout(() => {
                     kindergartenChannel.send(`${user} 36 hours is a long time to keep us waiting...`);
@@ -40,7 +40,7 @@ client.on('messageCreate', async (message)=> {
                     filter,
                     max: 1,
                     time: 100000,
-                    error: ['time'],
+                    errors: ['time'],
                 })
                 .then(collected => {
                     console.log(`Message received: ${collected.first().content}`);
