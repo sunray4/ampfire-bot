@@ -26,7 +26,8 @@ client.on('guildCreate', async (guild) => {
         // Send a welcome message to the general channel
         await generalChannel.send("hey guys im AmpFire, your custom discord bot!! it's great to meet all of you guys :D");
         await generalChannel.send("i can moderate fiducial if prompted by '/fiducial' in the fiducial channel through tagging the person with the next fiducial number. i'll also skip to the next fiducial number if there is no response in 48 hours");
-    } else {
+    } 
+    else {
         console.log('General channel not found!');
     }
 
@@ -56,23 +57,38 @@ client.on('messageCreate', async (message)=> {
                 //prompts the user to participate in fiducial
                 await kindergartenChannel.send(`${user} ${fiducialPhraseGenerator()}`);
 
-                const filter = (msg) => msg.content.includes(i.toString()) && msg.author.id === user.id && msg.channel.id === fiducialChannel.id;
+                const filter = (msg) => msg.content.includes(i.toString()) && msg.channel.id === fiducialChannel.id;
                 //second prompt after 36 hour wait
                 const timeoutId = setTimeout(() => {
                     kindergartenChannel.send(`${user} 36 hours is a long time to keep us waiting...`);
-                }, 100000);
+                }, 3600000 * 36);
+
+                const timeoutDuration = 1000 * 48;
+                const endTime = Date.now() + timeoutDuration;
                 
                 try {
                     //waits for message
-                    const collected = await fiducialChannel.awaitMessages({
-                        filter,
-                        max: 1,
-                        time: 1000000,
-                        errors: ['time'],
-                    });
-                    console.log(`Message received: ${collected.first().content}`);                 
-                    // Clear the timeout when the message is received
-                    clearTimeout(timeoutId);
+                    var foundMessage = false;
+                    while (!foundMessage) {
+                        const collected = await fiducialChannel.awaitMessages({
+                            filter,
+                            max: 1,
+                            time: endTime - Date.now(),
+                            errors: ['time'],
+                        });
+                        const receivedMessage = collected.first();
+                        if (receivedMessage.author.id === user.id) {
+                            console.log(`Message received: ${collected.first().content}`);                 
+                            // Clear the timeout when the message is received
+                            clearTimeout(timeoutId);
+                            foundMessage = true;
+                        }
+                        else if (!receivedMessage.content.toLowerCase().includes("where")) {
+                            console.log(`Message received from unexpected user ${receivedMessage.author.id}: ${collected.first().content}`);  
+                            await fiducialChannel.send(`${receivedMessage.author} :(`);
+                        }
+                    }
+                    
                 } catch {
                     //moves on to next user after 48 hours wait
                     fiducialChannel.send(`\"${i}\" - ${paGenerator()}`);
