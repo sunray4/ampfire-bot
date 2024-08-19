@@ -24,7 +24,8 @@ client.on('guildCreate', async (guild) => {
     const generalChannel = guild.channels.cache.find(channel => channel.name === 'general');
     if (generalChannel) {
         // Send a welcome message to the general channel
-        await generalChannel.send("hey guys im AmpFire, your custom discord bot!! i can moderate fiducial if prompted by '/fiducial' in the fiducial channel through tagging the next fiducial number in the #kindergarten channel. ill skip to the next fiducial number if there is no response in 48 hours. hopefully ill get more features soon... ");
+        await generalChannel.send("hey guys im AmpFire, your custom discord bot!! it's great to meet all of you guys :D");
+        await generalChannel.send("i can moderate fiducial if prompted by '/fiducial' in the fiducial channel through tagging the person with the next fiducial number. i'll also skip to the next fiducial number if there is no response in 48 hours");
     } else {
         console.log('General channel not found!');
     }
@@ -48,7 +49,7 @@ client.on('messageCreate', async (message)=> {
         for (let i = 1; i <= 52; i++) {
             console.log("Finding user...");
             //find user with the next fiducial number
-            const user = message.guild.members.cache.find(member => member.nickname && member.nickname.includes(i.toString() +  " ") && member.nickname.indexOf(i.toString()) == 0);        
+            const user = message.guild.members.cache.find(member => member.nickname && member.nickname.startsWith(i.toString() +  " ") && member.nickname.indexOf(i.toString()) == 0);        
             if (user) {
                 console.log("Found user. Waiting for message");
 
