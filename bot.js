@@ -63,7 +63,7 @@ client.on('messageCreate', async (message)=> {
                     kindergartenChannel.send(`${user} 36 hours is a long time to keep us waiting...`);
                 }, 3600000 * 36);
 
-                const timeoutDuration = 1000 * 48;
+                const timeoutDuration = 3600000 * 48;
                 const endTime = Date.now() + timeoutDuration;
                 
                 try {
