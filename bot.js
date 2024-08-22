@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import {Client, GatewayIntentBits} from 'discord.js';
+import { fiducial } from './fiducial.js';
 
 
 const client = new Client({
