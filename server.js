@@ -1,7 +1,13 @@
-import express from "express";
+import express from 'express';
+
 const app = express();
-const port = process.env.PORT || 3001;
 
-app.get("/", (req, res) => res.type('html').send(html));
+app.get('/', (req, res) => {
+  res.send('Bot is alive!');
+});
 
-const server = app.listen(port, () => console.log(`App listening on port ${port}!`));
+//10000 is the default port of render
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
