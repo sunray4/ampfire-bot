@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import {Client, GatewayIntentBits} from 'discord.js';
 import { fiducial } from './fiducial.js';
-import { obtainBirthday, scheduleDailyCheck } from './fiducial.js';
+import { obtainBirthday, scheduleDailyCheck } from './birthday.js';
 
 
 const client = new Client({
