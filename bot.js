@@ -18,7 +18,7 @@ let hasSentWelcomeMessage = false; // Track if the welcome message has been sent
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    scheduleDailyCheck();
+    scheduleDailyCheck(client);
 });
 
 client.on('guildCreate', async (guild) => {
@@ -40,7 +40,7 @@ client.on('guildCreate', async (guild) => {
 
 client.on('messageCreate', fiducial);
 
-const obtainedBday = false;
+var obtainedBday = false;
 if (!obtainedBday) {
     obtainBirthday(client);
     obtainedBday = true;

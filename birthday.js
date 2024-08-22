@@ -15,7 +15,7 @@ function getMillisecondsUntilMidnight() {
     return midnight.getTime() - now.getTime();
 }
 
-export function scheduleDailyCheck() {
+export function scheduleDailyCheck(client) {
     // Run the initial check immediately after the bot starts
     checkForBirthdays(client);
 
