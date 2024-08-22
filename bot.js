@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import {Client, GatewayIntentBits} from 'discord.js';
 import { fiducial } from './fiducial.js';
+import { obtainBirthday, scheduleDailyCheck } from './fiducial.js';
 
 
 const client = new Client({
@@ -9,6 +10,7 @@ const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent, //enabled in privileged intents
         GatewayIntentBits.GuildMembers, //enabled in privileged intents
+        GatewayIntentBits.DirectMessages, 
     ],
 })
 
@@ -16,6 +18,7 @@ let hasSentWelcomeMessage = false; // Track if the welcome message has been sent
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
+    scheduleDailyCheck();
 });
 
 client.on('guildCreate', async (guild) => {
@@ -36,5 +39,11 @@ client.on('guildCreate', async (guild) => {
 });
 
 client.on('messageCreate', fiducial);
+
+const obtainedBday = false;
+if (!obtainedBday) {
+    obtainBirthday(client);
+    obtainedBday = true;
+}
 
 client.login(process.env.BOT_TOKEN);
