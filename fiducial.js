@@ -1,6 +1,11 @@
 import { paGenerator, fiducialPhraseGenerator } from './word-generator.js';
 
 export const fiducial = async (message)=> {
+    if (!message.guild) {
+        console.error('Message is not from a guild.');
+        return;
+    }
+
     const fiducialChannel = message.guild.channels.cache.find(channel => channel.name === 'fiducial'); //reads messages in fiducial channel
     const kindergartenChannel = message.guild.channels.cache.find(channel => channel.name === 'kindergarten'); //prompts the next person in fiducial order in kindergarten channel
 
