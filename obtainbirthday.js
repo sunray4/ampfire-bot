@@ -17,8 +17,9 @@ if (fs.existsSync('birthdays.json')) {
 }
 
 
-
+let handledEvent = false;
 export function obtainBirthday (client) {
+    if (handledEvent) return;
     client.on('messageCreate', async message => {
         if (message.guild) {
             const guild = message.guild;
@@ -56,6 +57,6 @@ export function obtainBirthday (client) {
         }
         
     });
-
+    handledEvent = true;
 }
 
