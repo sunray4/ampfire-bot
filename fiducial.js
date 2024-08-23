@@ -12,7 +12,7 @@ export const fiducial = async (message)=> {
     //fidudical moderation
     if (message.channel.id === fiducialChannel.id && message.content === '/fiducial') {
         //count number of users missing from fiducial round
-        var absent = 0;
+        let absent = 0;
         for (let i = 1; i <= 52; i++) {
             console.log("Finding user...");
             //find user with the next fiducial number
@@ -34,7 +34,7 @@ export const fiducial = async (message)=> {
                 
                 try {
                     //waits for message
-                    var foundMessage = false;
+                    let foundMessage = false;
                     while (!foundMessage) {
                         const collected = await fiducialChannel.awaitMessages({
                             filter,
@@ -52,6 +52,9 @@ export const fiducial = async (message)=> {
                         else if (!receivedMessage.content.toLowerCase().includes("where")) {
                             console.log(`Message received from unexpected user ${receivedMessage.author.id}: ${collected.first().content}`);  
                             await fiducialChannel.send(`${receivedMessage.author} :(`);
+                        }
+                        else {
+                            console.log(`Message received from unexpected user ${receivedMessage.author.id}: ${collected.first().content}`);  
                         }
                     }
                     
