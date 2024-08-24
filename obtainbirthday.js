@@ -18,17 +18,20 @@ if (fs.existsSync('birthdays.json')) {
 
 
 let handledEvent = false;
-export function obtainBirthday (client) {
-    if (handledEvent) return;
-    client.on('messageCreate', async message => {
-        if (message.guild) {
-            const guild = message.guild;
+export async function obtainBirthday (client) {
+
+            if (handledEvent) return;
+            const guild = client.guilds.cache.find(guild => guild.name === 'general');
+            if (!guild) {
+                console.error('Guild not found');
+                return;
+            }
             const members = await guild.members.fetch();
 
             members.forEach(async member => {
                 if (!member.user.bot && !birthdays.has(member.id)) {
                     try {
-                        // await new Promise(r => setTimeout(r, 1000)); //1 second delay
+                        await new Promise(r => setTimeout(r, 1000)); //1 second delay
                         await member.send("When is your birthday? Please reply in mm-dd format (e.g. 05-09) so that we can celebrate your birthday with you!");
 
                         const filter = m => m.author.id === member.id;
@@ -54,9 +57,7 @@ export function obtainBirthday (client) {
                     }
                 }
             });
-        }
-        
-    });
-    handledEvent = true;
+            handledEvent = true;
+    
 }
 

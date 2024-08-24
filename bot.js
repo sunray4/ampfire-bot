@@ -4,7 +4,6 @@ import { fiducial } from './fiducial.js';
 import { scheduleDailyCheck } from './checkbirthday.js';
 import { obtainBirthday } from './obtainbirthday.js';
 
-
 const client = new Client({
     intents:  [
         GatewayIntentBits.Guilds,

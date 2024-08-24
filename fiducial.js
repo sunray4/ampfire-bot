@@ -15,7 +15,7 @@ export const fiducial = async (message)=> {
     }
 
     //fidudical moderation
-    if (message.channel.id === fiducialChannel.id && message.content === '/fiducial') {
+    if (message.channel.id === fiducialChannel.id && message.content === '!fiducial') {
         //count number of users missing from fiducial round
         let absent = 0;
         for (let i = 1; i <= 52; i++) {
