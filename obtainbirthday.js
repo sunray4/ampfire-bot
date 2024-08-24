@@ -38,17 +38,33 @@ export async function obtainBirthday (client) {
                         const dmChannel = await member.createDM();
                         const collector = dmChannel.createMessageCollector({filter});
 
-                        collector.on('collect', msg => {   
+                        collector.on('collect', async msg => {   
                             const bday = msg.content.trim();
 
                             if (/^\d{2}-\d{2}$/.test(bday)) {
                                 birthdays.set(member.id, bday);
-                                fs.writeFileSync('birthdays.json', JSON.stringify(Object.fromEntries(birthdays)), 'utf-8');
-                                member.send("Thank you!! Your response has been recorded");
+                                await fs.writeFileSync('birthdays.json', JSON.stringify(Object.fromEntries(birthdays)), 'utf-8');
+                                await fs.readFile('birthdays.json', 'utf8', (err, data) => {
+                                    if (err) {
+                                      console.error('Error reading the file:', err);
+                                      return;
+                                    }
+                                    
+                                    try {
+                                      // Parse the JSON data
+                                      const jsonData = JSON.parse(data);
+                                  
+                                      // Log the JSON data
+                                      console.log('JSON Data:', jsonData);
+                                    } catch (parseError) {
+                                      console.error('Error parsing JSON:', parseError);
+                                    }
+                                  });
+                                await member.send("Thank you!! Your response has been recorded");
                                 collector.stop();
                             }
                             else {
-                                member.send("Please provide your birthday in mm-dd format");
+                                await member.send("Please provide your birthday in mm-dd format");
                             }
                         });
                     }

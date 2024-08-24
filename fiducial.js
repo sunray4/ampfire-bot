@@ -38,9 +38,9 @@ export const fiducial = async (message)=> {
                 //second prompt after 36 hour wait
                 const timeoutId = setTimeout(() => {
                     kindergartenChannel.send(`${user} 36 hours is a long time to keep us waiting...`);
-                }, 6000); //3600000 * 36
+                }, 3600000 * 36); 
 
-                const timeoutDuration = 10000; //3600000 * 48;
+                const timeoutDuration = 3600000 * 48;
                 const endTime = Date.now() + timeoutDuration;
                 
                 try {
