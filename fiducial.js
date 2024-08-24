@@ -14,6 +14,12 @@ export const fiducial = async (message)=> {
         return;
     }
 
+    //remind if the !fiducial is sent in the wrong channel
+    if (message.content === '!fiducial' && message.channel.id != fiducialChannel.id) {
+        console.log(`!fiducial found in ${message.channel.id}`);
+        await message.channel.send("Please initiate !fiducial in the fiducial channel");
+    }
+
     //fidudical moderation
     if (message.channel.id === fiducialChannel.id && message.content === '!fiducial') {
         //count number of users missing from fiducial round
@@ -32,9 +38,9 @@ export const fiducial = async (message)=> {
                 //second prompt after 36 hour wait
                 const timeoutId = setTimeout(() => {
                     kindergartenChannel.send(`${user} 36 hours is a long time to keep us waiting...`);
-                }, 3600000 * 36);
+                }, 6000); //3600000 * 36
 
-                const timeoutDuration = 3600000 * 48;
+                const timeoutDuration = 10000; //3600000 * 48;
                 const endTime = Date.now() + timeoutDuration;
                 
                 try {
