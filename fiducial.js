@@ -22,6 +22,7 @@ export const fiducial = async (message)=> {
 
     //fidudical moderation
     if (message.channel.id === fiducialChannel.id && message.content === '!fiducial') {
+        console.log("Started new instance of fiducial")
         //count number of users missing from fiducial round
         let absent = 0;
         for (let i = 1; i <= 52; i++) {
@@ -32,9 +33,16 @@ export const fiducial = async (message)=> {
                 console.log("Found user. Waiting for message");
 
                 //prompts the user to participate in fiducial
-                await kindergartenChannel.send(`${user} ${fiducialPhraseGenerator()}`);
+                await kindergartenChannel.send(`${user} ${fiducialPhraseGenerator()} Please send your fiducial number in the fiducial channel`);
 
-                const filter = (msg) => msg.content.includes(i.toString()) && msg.channel.id === fiducialChannel.id;
+                const filter = (msg) => {
+                    if (msg.content.includes('<') && msg.content.includes('@') && msg.content.includes('>')) {
+                        return (msg.content.substring(0, msg.content.indexOf('<') + 1) + msg.content.substring(msg.content.indexOf('>') + 1, msg.content.length)).includes(i.toString());
+                    }
+                    else {
+                        return (msg.content.includes(i.toString()));
+                    }
+                };
                 //second prompt after 36 hour wait
                 const timeoutId = setTimeout(() => {
                     kindergartenChannel.send(`${user} 36 hours is a long time to keep us waiting...`);
@@ -54,7 +62,7 @@ export const fiducial = async (message)=> {
                             errors: ['time'],
                         });
                         const receivedMessage = collected.first();
-                        if (receivedMessage.author.id === user.id) {
+                        if (receivedMessage.author.id === user.id  && receivedMessage.channel.id === fiducialChannel.id) {
                             console.log(`Message received: ${collected.first().content}`);                 
                             // Clear the timeout when the message is received
                             clearTimeout(timeoutId);
