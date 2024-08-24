@@ -21,7 +21,7 @@ let handledEvent = false;
 export async function obtainBirthday (client) {
 
             if (handledEvent) return;
-            const guild = client.guilds.cache.find(guild => guild.name === 'bot tester');
+            const guild = client.guilds.cache.find(guild => guild.name === 'bot tester'); //change to server name
             if (!guild) {
                 console.error('Guild not found');
                 return;
