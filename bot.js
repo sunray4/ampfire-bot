@@ -21,10 +21,6 @@ const sentWelcomeMessages = new Set(); // Track if the welcome message has been 
 
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    
-    scheduleDailyCheck(client);
-
-    await obtainBirthday(client);
 });
 
 client.on('guildCreate', async (guild) => {
@@ -48,11 +44,13 @@ client.on('guildCreate', async (guild) => {
     else {
         console.log('General channel not found!');
     }
+
+    await obtainBirthday(client);
 });
 
 client.on('messageCreate', fiducial);
 
-
+client.on('ready', scheduleDailyCheck(client));
 
 
 client.login(process.env.BOT_TOKEN);
