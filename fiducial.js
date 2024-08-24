@@ -28,7 +28,8 @@ export const fiducial = async (message)=> {
         for (let i = 1; i <= 52; i++) {
             console.log("Finding user...");
             //find user with the next fiducial number
-            const user = message.guild.members.fetch.find(member => member.nickname && member.nickname.startsWith(i.toString() +  " ") && member.nickname.indexOf(i.toString()) == 0);        
+            const members = await message.guild.members.fetch(); // Fetch all members
+            const user = members.find(member => member.nickname && member.nickname.startsWith(i.toString() + " ") && member.nickname.indexOf(i.toString()) == 0);    
             if (user) {
                 console.log("Found user. Waiting for message");
 
