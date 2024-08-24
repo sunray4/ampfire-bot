@@ -49,7 +49,7 @@ client.on('guildCreate', async (guild) => {
     await obtainBirthday(client);
 });
 
-client.on('messageCreate', fiducial);
+client.on('messageCreate', (message) => fiducial(message, client));
 
 
 client.login(process.env.BOT_TOKEN);

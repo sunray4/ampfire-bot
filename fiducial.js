@@ -1,6 +1,45 @@
 import { paGenerator, fiducialPhraseGenerator } from './word-generator.js';
 
-export const fiducial = async (message)=> {
+
+async function awaitMessageInAllChannels(client, channel, kchannel, user, filter, time) {
+    return new Promise((resolve, reject) => {
+        //second prompt after 36 hour wait
+        const timeoutId = setTimeout(() => {
+            kchannel.send(`${user} 36 hours is a long time to keep us waiting...`);
+        }, 3600000 * 36); 
+        
+        const collector = async (message) => {
+            if (message.guild && message.channel.id === channel.id && filter(message) && message.author.id === user.id) {
+                resolve(message);
+                console.log(`Message received: ${message.content}`);   
+                clearTimeout(timeoutId);
+                client.off('messageCreate', collector);  // Stop listening after the first match
+            }
+            else if (message.guild && message.channel.id != channel.id && filter(message) && message.author.id === user.id) {
+                await message.channel.send(`${user} Please send your fiducial number in the fiducial channel`)
+                console.log("Number sent in wrong channel");    
+            }
+            else if (message.guild && message.channel.id === channel.id && filter(message) && message.author.id != user.id && !message.content.toLowerCase().includes("where")) {
+                console.log(`Message received from unexpected user ${message.author.id}: ${message.content}`);  
+                await channel.send(`${message.author} 💀💀`);
+            }
+            else if (message.guild && filter(message)){
+                console.log(`Message received from unexpected user ${message.author.id}: ${message.content}`);  
+            }
+        };
+
+        client.on('messageCreate', collector);
+
+        // Set a timeout to reject the promise if no message is received within the time limit
+        setTimeout(() => {
+            client.off('messageCreate', collector); // Stop listening when time is up
+            reject(new Error('Timeout: No message received'));
+        }, time);
+    });
+}
+
+
+export const fiducial = async (message, client)=> {
     if (!message.guild) {
         console.error('Message is not from a guild.');
         return;
@@ -45,38 +84,24 @@ export const fiducial = async (message)=> {
                     }
                 };
                 //second prompt after 36 hour wait
-                const timeoutId = setTimeout(() => {
-                    kindergartenChannel.send(`${user} 36 hours is a long time to keep us waiting...`);
-                }, 3600000 * 36); 
+                // const timeoutId = setTimeout(() => {
+                //     kindergartenChannel.send(`${user} 36 hours is a long time to keep us waiting...`);
+                // }, 3600000 * 36); 
 
                 const timeoutDuration = 3600000 * 48;
                 const endTime = Date.now() + timeoutDuration;
                 
                 try {
-                    //waits for message
-                    let foundMessage = false;
-                    while (!foundMessage) {
-                        const collected = await fiducialChannel.awaitMessages({
-                            filter,
-                            max: 1,
-                            time: endTime - Date.now(),
-                            errors: ['time'],
-                        });
-                        const receivedMessage = collected.first();
-                        if (receivedMessage.author.id === user.id  && receivedMessage.channel.id === fiducialChannel.id) {
-                            console.log(`Message received: ${collected.first().content}`);                 
-                            // Clear the timeout when the message is received
-                            clearTimeout(timeoutId);
-                            foundMessage = true;
-                        }
-                        else if (!receivedMessage.content.toLowerCase().includes("where")) {
-                            console.log(`Message received from unexpected user ${receivedMessage.author.id}: ${collected.first().content}`);  
-                            await fiducialChannel.send(`${receivedMessage.author} :(`);
-                        }
-                        else {
-                            console.log(`Message received from unexpected user ${receivedMessage.author.id}: ${collected.first().content}`);  
-                        }
-                    }
+                    await awaitMessageInAllChannels(
+                        client, 
+                        fiducialChannel,
+                        kindergartenChannel,
+                        user,
+                        filter,
+                        // max: 1,
+                        endTime - Date.now(), //time:
+                        // errors: ['time'],
+                    );
                     
                 } catch {
                     //moves on to next user after 48 hours wait
