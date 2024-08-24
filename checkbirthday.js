@@ -1,5 +1,6 @@
 import { Collection } from 'discord.js';
 import fs from 'fs';
+import schedule from 'node-schedule';
 
 const birthdays = new Collection();
  
@@ -16,29 +17,36 @@ if (fs.existsSync('birthdays.json')) {
     }
 }
 
-function getMillisecondsUntilMidnight() {
-    const now = new Date();
-    const midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0); // Set to midnight of the next day
-    return midnight.getTime() - now.getTime();
-}
+// function getMillisecondsUntilMidnight() {
+//     const now = new Date();
+//     const midnight = new Date(now);
+//     midnight.setHours(24, 0, 0, 0); // Set to midnight of the next day
+//     return midnight.getTime() - now.getTime();
+// }
 
 export function scheduleDailyCheck(client) {
-    // Run the initial check immediately after the bot starts
-    checkForBirthdays(client);
 
-    // Calculate the milliseconds until midnight
-    const millisecondsUntilMidnight = getMillisecondsUntilMidnight();
-
-    // Schedule the check for midnight
-    setTimeout(() => {
+    schedule.scheduleJob('0 0 * * *', async () => { // Every day at midnight
+        console.log('Running daily birthday check...');
         checkForBirthdays(client);
+    });
+
+
+    // Run the initial check immediately after the bot starts
+    // checkForBirthdays(client);
+
+    // // Calculate the milliseconds until midnight
+    // const millisecondsUntilMidnight = getMillisecondsUntilMidnight();
+
+    // // Schedule the check for midnight
+    // setTimeout(() => {
+    //     checkForBirthdays(client);
         
-        // Set up the interval to check every 24 hours after the first check
-        setInterval(() => {
-            checkForBirthdays(client);
-        }, 86400000); // 24 hours in milliseconds
-    }, millisecondsUntilMidnight);
+    //     // Set up the interval to check every 24 hours after the first check
+    //     setInterval(() => {
+    //         checkForBirthdays(client);
+    //     }, 86400000); // 24 hours in milliseconds
+    // }, millisecondsUntilMidnight);
 }
 
 
