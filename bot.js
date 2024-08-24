@@ -21,6 +21,7 @@ const sentWelcomeMessages = new Set(); // Track if the welcome message has been 
 
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`);
+    scheduleDailyCheck(client);
 });
 
 client.on('guildCreate', async (guild) => {
@@ -50,7 +51,7 @@ client.on('guildCreate', async (guild) => {
 
 client.on('messageCreate', fiducial);
 
-client.on('ready', scheduleDailyCheck(client));
+client.on('ready', );
 
 
 client.login(process.env.BOT_TOKEN);
