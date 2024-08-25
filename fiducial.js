@@ -21,7 +21,7 @@ async function awaitMessageInAllChannels(client, channel, kchannel, user, filter
             }
             else if (message.guild && message.channel.id === channel.id && filter(message) && message.author.id != user.id && !message.content.toLowerCase().includes("where")) {
                 console.log(`Message received from unexpected user ${message.author.id}: ${message.content}`);  
-                await channel.send(`${message.author} 💀💀`);
+                await channel.send(`${message.author} A PA will call out the fiducial number if there is no response in 48 hours`);
             }
             else if (message.guild && filter(message)){
                 console.log(`Message received from unexpected user ${message.author.id}: ${message.content}`);  
@@ -68,7 +68,7 @@ export const fiducial = async (message, client)=> {
             console.log("Finding user...");
             //find user with the next fiducial number
             const members = await message.guild.members.fetch(); // Fetch all members
-            const user = members.find(member => member.nickname && member.nickname.startsWith(i.toString() + " ") && member.nickname.indexOf(i.toString()) == 0);    
+            const user = members.find(member => i < 10 ? member.nickname && member.nickname.startsWith(i.toString() + " ") && member.nickname.indexOf(i.toString()) == 0 : member.nickname && member.nickname.startsWith(i.toString()) && member.nickname.indexOf(i.toString()) == 0);    
             if (user) {
                 console.log("Found user. Waiting for message");
 
