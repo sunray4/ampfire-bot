@@ -17,36 +17,12 @@ if (fs.existsSync('birthdays.json')) {
     }
 }
 
-// function getMillisecondsUntilMidnight() {
-//     const now = new Date();
-//     const midnight = new Date(now);
-//     midnight.setHours(24, 0, 0, 0); // Set to midnight of the next day
-//     return midnight.getTime() - now.getTime();
-// }
-
 export function scheduleDailyCheck(client) {
 
-    schedule.scheduleJob('0 0 * * *', async () => { // Every day at midnight
+    schedule.scheduleJob('0 7 * * *', async () => { // Every day at 4am gmt (vancouver midnight)
         console.log('Running daily birthday check...');
         checkForBirthdays(client);
     });
-
-
-    // Run the initial check immediately after the bot starts
-    // checkForBirthdays(client);
-
-    // // Calculate the milliseconds until midnight
-    // const millisecondsUntilMidnight = getMillisecondsUntilMidnight();
-
-    // // Schedule the check for midnight
-    // setTimeout(() => {
-    //     checkForBirthdays(client);
-        
-    //     // Set up the interval to check every 24 hours after the first check
-    //     setInterval(() => {
-    //         checkForBirthdays(client);
-    //     }, 86400000); // 24 hours in milliseconds
-    // }, millisecondsUntilMidnight);
 }
 
 
