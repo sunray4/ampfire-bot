@@ -1,4 +1,4 @@
-//update birthday.json with new birthdays as strings every time this app this deployed
+//update birthday.json with new birthdays from log every time this app this deployed
 //have to change server name in obtainbirthday.js to be used in different server
 
 import 'dotenv/config';
