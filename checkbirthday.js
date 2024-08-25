@@ -37,7 +37,7 @@ async function checkForBirthdays(client) {
     if (birthdays.size != 0) {
         birthdays.forEach((birthday, userid) => {
             if (birthday === today && generalChannel) {
-                generalChannel.send(`@everyone it's <@${userid}>'s birthday today!! 🎉🎉🎉`);
+                generalChannel.send(`@everyone it's <@${userid}>'s birthday today!!🥳🥳`);
             }
         });
     }
