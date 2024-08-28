@@ -23,7 +23,7 @@ async function awaitMessageInAllChannels(client, channel, kchannel, user, filter
                 console.log(`Message received from unexpected user ${message.author.id}: ${message.content}`);  
                 await channel.send(`${message.author} A PA will call out the fiducial number if there is no response in 48 hours`);
             }
-            else if (message.guild && filter(message)){
+            else if (message.guild && filter(message) && message.channel.id === channel.id){
                 console.log(`Message received from unexpected user ${message.author.id}: ${message.content}`);  
             }
         };
@@ -60,11 +60,19 @@ export const fiducial = async (message, client)=> {
     }
 
     //fidudical moderation
-    if (message.channel.id === fiducialChannel.id && message.content === '!fiducial') {
+    if (message.channel.id === fiducialChannel.id && (message.content === '!fiducial' || message.content.startsWith('!fiducial@'))) {
         console.log("Started new instance of fiducial")
         //count number of users missing from fiducial round
         let absent = 0;
-        for (let i = 1; i <= 52; i++) {
+        let i = 1;
+        if (message.content.startsWith('!fiducial@')) {
+            const numberString = message.content.replace('!fiducial@', '').trim();
+            if (numberString.length > 0 && (/^\d{1}$/.test(numberString) || /^\d{2}$/.test(numberString))) {
+                i = parseInt(numberString, 10);
+            }
+            console.log(`Started new instance of fiducial from ${i}`)
+        }
+        while (i <= 52) {
             console.log("Finding user...");
             //find user with the next fiducial number
             const members = await message.guild.members.fetch(); // Fetch all members
@@ -116,6 +124,7 @@ export const fiducial = async (message, client)=> {
                 await fiducialChannel.send(`\"${i}\" - ${paGenerator()}`);
                 absent++;
             }
+            i++;
         }
         if (absent == 0) {
             await fiducialChannel.send("Well done for completing fiducial!! everyone is present congratulations :D");

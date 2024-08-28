@@ -38,7 +38,7 @@ client.on('guildCreate', async (guild) => {
             // Send welcome messages with delays to avoid rate limits
             await generalChannel.send("Hey guys, I'm AmpFire, your custom Discord bot!! It's great to meet all of you guys :D");
             await new Promise(resolve => setTimeout(resolve, 1000)); // 1-second delay
-            await generalChannel.send("I can moderate fiducial if prompted by '/fiducial' in the fiducial channel through tagging the person with the next fiducial number. I'll also skip to the next fiducial number if there is no response in 48 hours.");
+            await generalChannel.send("I can moderate fiducial if prompted by '!fiducial' in the fiducial channel through tagging the person with the next fiducial number. I'll also skip to the next fiducial number if there is no response in 48 hours.");
             await new Promise(resolve => setTimeout(resolve, 1000)); // 1-second delay
             await generalChannel.send("I can also collect and celebrate the birthdays of members in this server. Please check your DMs to share your birthday date with me!!");
             sentWelcomeMessages.add(guild.id);
