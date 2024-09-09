@@ -19,6 +19,10 @@ async function awaitMessageInAllChannels(client, channel, kchannel, user, filter
                 await message.channel.send(`${user} Please send your fiducial number in the fiducial channel`)
                 console.log("Number sent in wrong channel");    
             }
+            else if (message.guild && message.channel.id == channel.id && !filter(message) && message.author.id === user.id) {
+                await kchannel.send(`${user} Please send your fiducial number in the fiducial channel`)
+                console.log("wrong number sent");    
+            }
             else if (message.guild && message.channel.id === channel.id && filter(message) && message.author.id != user.id && !message.content.toLowerCase().includes("where")) {
                 console.log(`Message received from unexpected user ${message.author.id}: ${message.content}`);  
                 await channel.send(`${message.author} A PA will call out the fiducial number if there is no response in 48 hours`);
