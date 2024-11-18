@@ -130,15 +130,15 @@ export const fiducial = async (message, client)=> {
             }
             i++;
         }
-        if (absent == 0) {
-            await fiducialChannel.send("Well done for completing fiducial!! everyone is present congratulations :D");
-        }
-        else if (absent == 1) {
-            await fiducialChannel.send(`Well done for completing fiducial!! only ${absent} person is absent in this round `);
-        }
-        else {
-            await fiducialChannel.send(`Well done for completing fiducial!! ${absent} people are absent in this round`);
-        }
+
+            await fiducialChannel.send("Well done for completing fiducial!!");
+        
+        // else if (absent == 1) {
+        //     await fiducialChannel.send(`Well done for completing fiducial!! only ${absent} person is absent in this round `);
+        // }
+        // else {
+        //     await fiducialChannel.send(`Well done for completing fiducial!! ${absent} people are absent in this round`);
+        // }
 
     }
 };
