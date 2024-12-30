@@ -25,7 +25,8 @@ const sentWelcomeMessages = new Set(); // Track if the welcome message has been 
 client.once('ready', async () => {
     console.log(`Logged in as ${client.user.tag}!`);
     scheduleDailyCheck(client);
-    // await obtainBirthday(client);
+    //stop obtaining brithdays with each redeployment to stop spam
+    // await obtainBirthday(client); 
 });
 
 client.on('guildCreate', async (guild) => {
