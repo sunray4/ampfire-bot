@@ -10,5 +10,5 @@ function ping() {
     });
 }
 
-// Ping every 5 minutes 
-setInterval(ping, 300000);
+// Ping every 1 minute 
+setInterval(ping, 60000);
