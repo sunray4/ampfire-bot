@@ -11,6 +11,7 @@ async function awaitMessageInAllChannels(
   return new Promise((resolve, reject) => {
     const data = fs.readFileSync("./fiducial.json", "utf8");
     const fiducialData = JSON.parse(data);
+    const cur = parseInt(fiducialData.cur) || 0;
     let curtime = parseInt(fiducialData.time) || 0;
     console.log(
       "awaitMessageInAllChannels: curtime = ",
@@ -82,13 +83,13 @@ async function awaitMessageInAllChannels(
     // if passed 36 hours, send a message to the channel
     setTimeout(async () => {
       curtime += 5 * 60 * 1000;
-      const fiducialData = { cur: fiducialData.cur, time: curtime };
+      const newFiducialData = { cur: cur, time: curtime };
       fs.writeFileSync(
         "./fiducial.json",
-        JSON.stringify(fiducialData, null, 2)
+        JSON.stringify(newFiducialData, null, 2)
       );
       console.log(
-        `Updated fiducial.json: cur = ${fiducialData.cur}, time = ${curtime}`
+        `Updated fiducial.json: cur = ${newFiducialData.cur}, time = ${curtime}`
       );
 
       if (curtime == 3600000 * 36) {
